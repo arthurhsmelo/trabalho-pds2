@@ -35,8 +35,11 @@ Grupo 3 - Rede Social (Twitter)
 | ----------------- | ------------|
 | id                | Post
 | name              | Search
-| qtPosts           | Message
-| qtLikes           | System
+| password          | Message
+| username          | System
+| systemId          | 
+| qtPosts           | 
+| qtLikes           | 
 | qtFollowing       | 
 | qtFollowers       | 
 | faz login         | 
