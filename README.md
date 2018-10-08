@@ -2,7 +2,7 @@
 Grupo 3 - Rede Social (Twitter)
 
 **User Stories e Cartões CRC**
-> **Observação:** As Users Stories e os Cartões CRC's também estão disponíveis em PDF/PNG no repositório para download na pasta "Primeira Entrega", este markdown é para a melhor visualização das entregas.
+> **Observação:** As Users Stories e os Cartões CRC's também estão disponíveis em PDF/PNG no repositório para download na pasta "documentation/Primeira Entrega", este markdown é para a melhor visualização das entregas.
 
 ## User Stories
 
