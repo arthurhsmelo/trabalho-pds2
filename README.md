@@ -38,6 +38,7 @@ Grupo 3 - Rede Social (Twitter)
 | password          | Message
 | username          | System
 | systemId          | 
+| content           | 
 | qtPosts           | 
 | qtLikes           | 
 | qtFollowing       | 
