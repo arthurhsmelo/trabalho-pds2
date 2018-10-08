@@ -44,11 +44,9 @@ Grupo 3 - Rede Social (Twitter)
 | posta algo        | 
 | reposta algo      | 
 | comenta algo      | 
-| pesquisa usuarios |
-| e posts           |
-| segue e deixa de  |
-| seguir            |
-| envia mensagens   | 
+| pesquisa usuarios e posts |
+|segue e deixa de seguir |
+| envia mensagens    | 
 | visualiza perfis  | 
 
 ### Post
@@ -67,10 +65,7 @@ Grupo 3 - Rede Social (Twitter)
 | ----------------- | ------------ |
 | returnedId        | User
 | userId            | Post
-| faz a busca,      |
-| por posts,        |
-| reposts ou        |
-| comentàrios       |
+| faz a busca, por posts, reposts ou comentàrios |
 
 ### Message
 | Responsabilidades | Colaborações
