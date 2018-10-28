@@ -7,39 +7,20 @@
 #include "System.hpp"
 #include "User.hpp"
 #include "sqlite3/sqlite3.h"
+#include "DAO/dao.hpp"
 
 
 using namespace std;
-
-static int callback(void *NotUsed, int argc, char **argv, char **azColName)
-{
-	int i;
-	for(i=0; i<argc; i++)
-	{
-		cout<<azColName[i]<<" = " << (argv[i] ? argv[i] : "NULL")<<"\n";
-	}
-	cout<<"\n";
-	return 0;
-}
   
-int main()
-{
+int main() {
 	const int STATEMENTS = 8;
-	sqlite3 *db;
-	char *zErrMsg = 0;
+  int rc = 0;
+  char *zErrMsg = 0;
 	const char *pSQL[STATEMENTS];
-	int rc;
-  
-	rc = sqlite3_open("familyGuy.db", &db);
 
-	if( rc )
-	{
-		cout<<"Can't open database: "<<sqlite3_errmsg(db)<<"\n";
-	} 
-	else
-	{
-		cout<<"Open database successfully\n\n";
-	}
+  DAO *dao = DAO::getInstance();
+
+  cout << "ok" << endl;
 
 	pSQL[0] = "create table myTable (FirstName varchar(30), LastName varchar(30), Age smallint, Hometown varchar(30), Job varchar(30))";
 
@@ -51,24 +32,26 @@ int main()
 	
 	pSQL[4] = "insert into myTable (FirstName, LastName, Age, Hometown, Job) values ('Glenn', 'Quagmire', 41, 'Quahog', 'Pilot')";
 
-	pSQL[5] = "select * from myTable";
-	
-	pSQL[6] = "delete from myTable"; 
+	pSQL[5] = "select * from myTable";	
+  
+  pSQL[6] = "delete from myTable"; 
 
 	pSQL[7] = "drop table myTable";
 
-	for(int i = 0; i < STATEMENTS; i++)
-	{
-		rc = sqlite3_exec(db, pSQL[i], callback, 0, &zErrMsg);
-		if( rc!=SQLITE_OK )
-		{
-			cout<<"SQL error: "<<sqlite3_errmsg(db)<<"\n";
-			sqlite3_free(zErrMsg);
-			break;
-		}
+	for(int i = 0; i < STATEMENTS; i++) {
+    if(i != 5) {
+      rc = sqlite3_exec(dao->getConnection(), pSQL[i], nullptr, 0, &zErrMsg);
+      if( rc != SQLITE_OK ) {
+        cout << "SQL error: " << i << sqlite3_errmsg(dao->getConnection()) <<"\n";
+        sqlite3_free(zErrMsg);
+        break;
+      }      
+    } else {
+      dao->select(pSQL[i]);
+    }
 	}
 
-	sqlite3_close(db);
+	sqlite3_close(dao->getConnection());
 
 	return 0;
 }
