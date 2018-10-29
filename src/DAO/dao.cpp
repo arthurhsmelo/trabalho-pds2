@@ -41,8 +41,7 @@ map<string, string> DAO::fetchRow() {
 }
 
 vector<map<string, string>> DAO::select(string sql) {
-    char *zErrMsg = 0;
-    this->dbStatus = sqlite3_exec(this->sqliteConn, sql.c_str(), &callback, this, &zErrMsg);
+    this->dbStatus = sqlite3_exec(this->sqliteConn, sql.c_str(), &callback, this, &(this->zErrMsg));
      
     if( this->dbStatus != SQLITE_OK ) {
         std::cout << "SQL error: " << string(zErrMsg) << std::endl;
@@ -64,15 +63,40 @@ vector<map<string, string>> DAO::select(string sql) {
     return this->fetchedRows;
 }
 
-bool DAO::insert(string sql) {
-    return true;
+void DAO::exec(string sql) {
+    this->dbStatus = sqlite3_exec(this->sqliteConn, sql.c_str(), &callback, this, &(this->zErrMsg));
 };
 
-bool DAO::remove(string sql) {
+bool DAO::insert(string sql) {
+    exec(sql);
+     
+    if( this->dbStatus != SQLITE_OK ) {
+        std::cout << "Erro ao inserir: " << string(this->zErrMsg) << std::endl;
+        sqlite3_free(zErrMsg);
+        return false;        
+    }
     return true;
 };
 
 bool DAO::update(string sql) {
+    exec(sql);
+     
+    if( this->dbStatus != SQLITE_OK ) {
+        std::cout << "Erro ao atualizar: " << string(this->zErrMsg) << std::endl;
+        sqlite3_free(zErrMsg);
+        return false;        
+    }
+    return true;
+};
+
+bool DAO::remove(string sql) {
+    exec(sql);
+     
+    if( this->dbStatus != SQLITE_OK ) {
+        std::cout << "Erro ao deletar: " << string(this->zErrMsg) << std::endl;
+        sqlite3_free(zErrMsg);
+        return false;        
+    }
     return true;
 };
 
