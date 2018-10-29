@@ -25,6 +25,7 @@ class DAO{
 	
     DAO();
     static int callback(void*, int, char**, char **);
+    void exec(string);
  
 public:
 	//Retorna a Instãncia 
