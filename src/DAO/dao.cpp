@@ -1,4 +1,4 @@
-#include "DAO/dao.hpp"
+#include "DAO/DAO.hpp"
 
 DAO::DAO() {
     this->dbStatus = sqlite3_open("database.db", &(this->sqliteConn));

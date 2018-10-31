@@ -48,5 +48,11 @@ ${BUILD_DIR}/main: ${BUILD_DIR}/System.o ${BUILD_DIR}/User.o ${BUILD_DIR}/Post.o
 
 # Rule for cleaning files generated during compilation.
 # Call 'make clean' to use it
-clean:
-	rm -f ${BUILD_DIR}/* 
+clean_linux:
+	rm -rf ${BUILD_DIR}/*.o 
+
+clean_windows:
+	del /S "%dir%\build\*.o"
+
+run:
+	./build/main.exe

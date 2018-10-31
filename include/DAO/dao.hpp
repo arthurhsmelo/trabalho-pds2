@@ -1,3 +1,6 @@
+#ifndef DAO_H
+#define DAO_H
+
 #include <string>
 #include <vector>
 #include <map> 
@@ -15,7 +18,7 @@ struct row {
 };
 
 //Singleton para conectar somente uma vez com o db sqlite3
-class DAO{
+class DAO {
 	static DAO* _instance;
 	char *zErrMsg = 0;
 	int dbStatus;
@@ -48,3 +51,5 @@ public:
     sqlite3* getConnection();
 
 };
+
+#endif
