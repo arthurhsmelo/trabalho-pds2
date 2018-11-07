@@ -5,7 +5,14 @@
 
 class SystemScreen : public MainScreen {
   public:
-    virtual void showMenu() override;
+    void showMenu();
+  
+  private:
+    void requestLogin();
+    void requestLogout();
+    void requestSignup(bool);
+    void requestSignout();
+
 };
 
 #endif

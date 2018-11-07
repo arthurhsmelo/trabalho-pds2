@@ -4,6 +4,9 @@
 #include "daos/DAO.hpp"
 
 class SearchDAO : public DAO {
+    public:
+        string getTableName();
+        string getPrimaryKey();
 
 };
 

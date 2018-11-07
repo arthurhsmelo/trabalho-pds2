@@ -45,7 +45,7 @@ SearchDAO.o: ${INCLUDE_DIR}/daos/daos/SearchDAO.hpp ${SRC_DIR}/daos/daos/SearchD
 
 ####################################################
 #                                                  #
-#                    SCREENS                       #
+#                     VIEWS                        #
 #                                                  #
 ####################################################
 
@@ -101,16 +101,26 @@ System.o: ${INCLUDE_DIR}/models/System.hpp ${SRC_DIR}/models/System.cpp
 
 ####################################################
 #                                                  #
+#                  	EXCEPTIONS                     #
+#                                                  #
+####################################################
+
+# General Exceptions
+Exceptions.o: ${INCLUDE_DIR}/exceptions/Exception.hpp ${SRC_DIR}/exceptions/Exception.cpp
+	${CC} ${CFLAGS} -I ${INCLUDE_DIR}/ -c ${SRC_DIR}/exceptions/Exception.cpp -o ${BUILD_DIR}/Exceptions.o
+
+####################################################
+#                                                  #
 #                       APP                        #
 #                                                  #
 ####################################################
 
 # main
-main.o: ${INCLUDE_DIR}/daos/Connection.hpp ${INCLUDE_DIR}/daos/DAO.hpp ${INCLUDE_DIR}/daos/daos/SystemDAO.hpp ${INCLUDE_DIR}/daos/daos/UserDAO.hpp ${INCLUDE_DIR}/daos/daos/MessageDAO.hpp ${INCLUDE_DIR}/daos/daos/PostDAO.hpp ${INCLUDE_DIR}/daos/daos/SearchDAO.hpp ${INCLUDE_DIR}/views/MainScreen.hpp ${INCLUDE_DIR}/views/MessageScreen.hpp ${INCLUDE_DIR}/views/PostScreen.hpp ${INCLUDE_DIR}/views/SearchScreen.hpp ${INCLUDE_DIR}/views/SystemScreen.hpp ${INCLUDE_DIR}/views/UserScreen.hpp ${INCLUDE_DIR}/models/User.hpp ${INCLUDE_DIR}/models/Message.hpp ${INCLUDE_DIR}/models/Post.hpp ${INCLUDE_DIR}/models/Search.hpp ${INCLUDE_DIR}/models/System.hpp ${INCLUDE_DIR}/lib/sqlite/sqlite3.h ${SRC_DIR}/main.cpp
+main.o: ${INCLUDE_DIR}/exceptions/Exception.hpp ${INCLUDE_DIR}/daos/Connection.hpp ${INCLUDE_DIR}/daos/DAO.hpp ${INCLUDE_DIR}/daos/daos/SystemDAO.hpp ${INCLUDE_DIR}/daos/daos/UserDAO.hpp ${INCLUDE_DIR}/daos/daos/MessageDAO.hpp ${INCLUDE_DIR}/daos/daos/PostDAO.hpp ${INCLUDE_DIR}/daos/daos/SearchDAO.hpp ${INCLUDE_DIR}/views/MainScreen.hpp ${INCLUDE_DIR}/views/MessageScreen.hpp ${INCLUDE_DIR}/views/PostScreen.hpp ${INCLUDE_DIR}/views/SearchScreen.hpp ${INCLUDE_DIR}/views/SystemScreen.hpp ${INCLUDE_DIR}/views/UserScreen.hpp ${INCLUDE_DIR}/models/User.hpp ${INCLUDE_DIR}/models/Message.hpp ${INCLUDE_DIR}/models/Post.hpp ${INCLUDE_DIR}/models/Search.hpp ${INCLUDE_DIR}/models/System.hpp ${INCLUDE_DIR}/lib/sqlite/sqlite3.h ${SRC_DIR}/main.cpp
 	${CC} ${CFLAGS} -I ${INCLUDE_DIR}/ -c ${SRC_DIR}/main.cpp -o ${BUILD_DIR}/main.o
 
 # app
-main: Connection.o DAO.o SystemDAO.o UserDAO.o MessageDAO.o PostDAO.o SearchDAO.o MainScreen.o MessageScreen.o PostScreen.o SearchScreen.o SystemScreen.o UserScreen.o User.o Message.o Post.o Search.o System.o main.o
+main: Exceptions.o Connection.o DAO.o SystemDAO.o UserDAO.o MessageDAO.o PostDAO.o SearchDAO.o MainScreen.o MessageScreen.o PostScreen.o SearchScreen.o SystemScreen.o UserScreen.o User.o Message.o Post.o Search.o System.o main.o
 	${CC} ${CFLAGS} -o ${BUILD_DIR}/main ${BUILD_DIR}/*.o ${BUILD_DIR}/lib/sqlite/sqlite.o
 
 

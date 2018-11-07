@@ -4,6 +4,9 @@
 #include "daos/DAO.hpp"
 
 class PostDAO : public DAO {
+    public:
+        string getTableName();
+        string getPrimaryKey();
 
 };
 

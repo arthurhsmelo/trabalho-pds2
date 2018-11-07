@@ -4,7 +4,9 @@
 #include "daos/DAO.hpp"
 
 class MessageDAO : public DAO {
-
+    public:
+        string getTableName();
+        string getPrimaryKey();
 };
 
 #endif

@@ -5,7 +5,7 @@
 
 class UserScreen : public MainScreen {
   public:
-    virtual void showMenu() override;
+    void showMenu();
 };
 
 #endif
