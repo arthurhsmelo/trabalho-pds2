@@ -30,6 +30,7 @@ protected:
     bool remove(string);
     bool update(string);
     bool createTable(string);
+    vector<map<string, string>> getFetchedRows();
     string getNextId(); 
     virtual string getTableName() = 0;
     virtual string getPrimaryKey() = 0;

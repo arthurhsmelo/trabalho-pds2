@@ -14,15 +14,14 @@ int DAO::callback(void *data, int numberOfCols, char **rowValues, char **colsNam
     self->setNumberOfCols(numberOfCols); 
     self->setRowValues(rowValues); 
     self->setColsNames(colsNames);  
-
+    std::cout << "1" << std::endl;
     self->fetchedRows.push_back(self->fetchRow());
     return 0;
 }
 
 string DAO::getNextId() {
-    string query = "SELECT MAX(" + this->getPrimaryKey() + ") FROM " + this->getTableName() + ";";
+    string query = "SELECT * FROM ( SELECT MAX("+ this->getPrimaryKey() +") as "+ this->getPrimaryKey() +" FROM "+ this->getTableName() +" ) WHERE "+ this->getPrimaryKey() +" IS NOT NULL";
     vector<map<string, string>> result = this->select(query);
-
     if(result.size() > 0) {
         int maxId = std::stoi(result.at(0).find(this->getPrimaryKey())->second);
         return std::to_string(maxId + 1);
@@ -50,7 +49,7 @@ map<string, string> DAO::fetchRow() {
 
 vector<map<string, string>> DAO::select(string sql) {
     this->dbStatus = sqlite3_exec(this->sqliteConn, sql.c_str(), &callback, this, &(this->zErrMsg));
-     
+    
     if( this->dbStatus != SQLITE_OK ) {
         std::cout << "SQL error: " << string(zErrMsg) << std::endl;
         sqlite3_free(zErrMsg);
@@ -60,13 +59,6 @@ vector<map<string, string>> DAO::select(string sql) {
 
         this->fetchedRows.push_back(row); 
     } 
-
-    for (auto row : this->fetchedRows) {
-        for (auto field : row) {
-            std::cout << field.first << ": " << field.second << " - ";
-        }
-        std::cout << std::endl;
-    }
 
     return this->fetchedRows;
 }

@@ -1,3 +1,4 @@
 .vscode
 build/*
-!build/.keep
+!build/lib
+database.db

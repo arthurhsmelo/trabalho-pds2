@@ -84,29 +84,13 @@ void System::showMenu() {
 
 }
 
-void System::createSystemTable(DAO*) {
-
-}
-
-void System::createUserTable(DAO*) {
-
-}
-
-void System::createPostTable(DAO*) {
-
-}
-
-void System::createMessageTable(DAO*) {
-
-}
-
 bool System::initializeDB() {
-    DAO *conn = DAO::getInstance();
+    SystemDAO *systemDao = new SystemDAO();
 
-    this->createSystemTable(conn);
-    this->createUserTable(conn);
-    this->createPostTable(conn);
-    this->createMessageTable(conn);
+    systemDao->createSystemTable();
+    systemDao->createUserTable();
+    systemDao->createPostTable();
+    systemDao->createMessageTable();
 
     return true;
 }

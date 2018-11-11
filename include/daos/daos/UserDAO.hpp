@@ -11,7 +11,7 @@ class UserDAO : public DAO {
         User* select(string);
          User* select(string, string);
         vector<User> selectList();
-        void insert(User*);
+        void insert(User);
         void remove(User*);
 
 };

@@ -6,6 +6,7 @@
 #include <map> 
 #include <iostream> 
 #include "sqlite3/sqlite3.h"
+#include "DAO/Connection.hpp"
 
 using std::string;
 using std::map;
@@ -17,9 +18,7 @@ struct row {
     vector<string> colsNames;
 };
 
-//Singleton para conectar somente uma vez com o db sqlite3
 class DAO {
-	static DAO* _instance;
 	char *zErrMsg = 0;
 	int dbStatus;
     sqlite3 *sqliteConn;
@@ -31,8 +30,6 @@ class DAO {
     void exec(string);
  
 public:
-	//Retorna a Instãncia 
-    static DAO* getInstance();
 	//Retorna um map com as chaves sendo as colunas, e os os valores o valor correspondente a cada coluna
     vector<map<string, string>> select(string);
     bool insert(string);
@@ -47,8 +44,6 @@ public:
     
     int getNumberOfCols();
     vector<string> getColsNames();
-
-    sqlite3* getConnection();
 
 };
 

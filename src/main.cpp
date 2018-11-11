@@ -1,14 +1,10 @@
-#include <iostream>
-#include <string>
+#include "views/MainScreen.hpp"
 
-#include "System.hpp"
-
-
-using namespace std;
-  
 int main() {
+    MainScreen *mainScreen = new MainScreen();
 
-	System *system = new System();
+    mainScreen->showMenu();
 
-	return 0;
+    delete mainScreen;
+    return 0;
 }

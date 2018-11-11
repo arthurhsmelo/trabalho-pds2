@@ -73,7 +73,7 @@ void System::signup(string name, string username, string password, bool doLogin)
     throw Exception::UserAlreadyExists();
   } else {
     User *user = new User(name, username, password);
-    userDao.insert(user);
+    userDao.insert(*user);
     if (doLogin)
       this->setLoggedUser(user);
   }

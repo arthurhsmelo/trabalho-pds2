@@ -1,6 +1,8 @@
 #include "DAO/DAO.hpp"
 
 DAO::DAO() {
+    Connection *conn = Connection::getInstance();
+    this->sqliteConn = conn->getConnection();
     this->dbStatus = sqlite3_open("database.db", &(this->sqliteConn));
     if( this->dbStatus ) {
         std::cout << "Não foi possível abrir a base de dados: " << sqlite3_errmsg(this->sqliteConn) << std::endl; 
@@ -15,12 +17,6 @@ int DAO::callback(void *data, int numberOfCols, char **rowValues, char **colsNam
 
     self->fetchedRows.push_back(self->fetchRow());
     return 0;
-}
-
-DAO* DAO::getInstance() {
-    if(_instance == NULL) 
-        _instance = new DAO();
-    return _instance;
 }
 
 map<string, string> DAO::fetchRow() {
@@ -121,9 +117,3 @@ int DAO::getNumberOfCols() {
 vector<string> DAO::getColsNames() {
     return this->returnedRow.colsNames;
 };
-
-sqlite3* DAO::getConnection() {
-    return this->sqliteConn;
-};
-
-DAO * DAO::_instance = NULL;
