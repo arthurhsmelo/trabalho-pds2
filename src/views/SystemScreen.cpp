@@ -115,8 +115,15 @@ void SystemScreen::requestLogout() {
     System *session = System::getInstance();
     this->clrscr();
 
-    cout << "Saindo..." << endl;
-    session->logout();
+    string choice;
+
+    cout << "Deseja realmente sair?" << endl;
+    std::cin >> choice;
+
+    if(choice.compare("S") == 0 || choice.compare("s") == 0) {
+        cout << "Saindo..." << endl;
+        session->logout();
+    } 
 
     MainScreen::showMenu();            
 }

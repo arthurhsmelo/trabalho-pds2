@@ -30,8 +30,9 @@ bool System::initializeDB() {
   bool sCreation1 = systemDao.createUserTable();
   bool sCreation2 = systemDao.createPostTable();
   bool sCreation3 = systemDao.createMessageTable();
+  bool sCreation4 = systemDao.createFollowTable();
 
-  if (sCreation1 && sCreation2 && sCreation3)
+  if (sCreation1 && sCreation2 && sCreation3 && sCreation4)
     return true;
   else
     return false;
@@ -75,7 +76,7 @@ void System::signup(string name, string username, string password, bool doLogin)
     User *user = new User(name, username, password);
     userDao.insert(*user);
     if (doLogin)
-      this->setLoggedUser(user);
+      this->setLoggedUser(userDao.select(username));
   }
 }
 
@@ -85,7 +86,9 @@ void System::logout() {
 
 void System::signout() {
   UserDAO userDao;
-  userDao.remove(this->getLoggedUser());
+  User* user = this->getLoggedUser();
+  userDao.remove(user);
+  userDao.removeFollow(user);
   this->setLoggedUser(nullptr);
 }
 

@@ -4,9 +4,9 @@
 #include "views/PostScreen.hpp"
 #include "views/UserScreen.hpp"
 #include "views/MessageScreen.hpp"
+#include "exceptions/Exception.hpp"
 
 MainScreen::~MainScreen() {
-
 }
 
 void MainScreen::clrscr() {
@@ -14,13 +14,62 @@ void MainScreen::clrscr() {
 }
 
 int MainScreen::getInput() {
-    int choice;    
-    std::cin >> choice;
-    return choice;
+    int choice = 0;
+    bool repeat = true;
+    do {
+        try {
+            if(!(cin >> choice)) {
+                throw Exception::InvalidInput();    
+            } else {
+                repeat = false;
+            }
+        } catch(Exception::InvalidInput& e) {
+            cin.clear();
+            cin.ignore(9999, '\n');
+            cout << "Entrada inválida.  Tente novamente: ";
+        }
+    } while(repeat);
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // eat next newline 
+    return choice;      
 } 
+
+void MainScreen::showConfigOptions() {
+    int choice = 0;
+    SystemScreen sScreen;
+    do {
+        this->clrscr();
+        cout << "Configurações" << endl;
+        cout << "Escolha uma opção" << endl;
+        cout << "1 - Logout" << endl;
+        cout << "2 - Apagar conta" << endl;
+        cout << "3 - Cadastrar uma nova conta" << endl;
+        cout << "4 - Voltar" << endl;
+        cout << "Escolha: ";
+        
+        choice = this->getInput();
+        switch(choice) {
+            case 1:
+                sScreen.requestLogout();
+                break;
+            case 2:
+                sScreen.requestSignout();
+                break;
+            case 3:                     
+                sScreen.requestSignup(false);
+                break;
+            default:
+                break;
+        }
+    } while(choice!=4);
+}
 
 void MainScreen::showMenu() {
     try {
+        PostScreen pScreen;
+        UserScreen uScreen;   
+        SearchScreen shScreen;
+        MessageScreen mScreen;
+        
         System *session = System::getInstance();
         if(session->getLoggedUser() != nullptr) {
             int choice = 0;
@@ -29,9 +78,9 @@ void MainScreen::showMenu() {
                 cout << "Menu Principal" << endl;
                 cout << "Escolha uma opção" << endl;
                 cout << "1 - Ver meu feed" << endl;
-                cout << "2 - Buscar um post ou usuário" << endl;
-                cout << "3 - Ver meu perfil" << endl;
-                cout << "4 - Ver minhas mensagens" << endl;
+                cout << "2 - Ver meu perfil" << endl;
+                cout << "3 - Pesquisar" << endl;
+                cout << "4 - Ver minhas conversas" << endl;
                 cout << "5 - Configurações" << endl;
                 cout << "6 - Sair" << endl;
                 cout << "Escolha: ";
@@ -40,23 +89,24 @@ void MainScreen::showMenu() {
                 
                 switch(choice) {
                     case 1:
-                        cout << "Feed!" << endl;
+                        pScreen.showMenu();
                         break;
                     case 2:
-                        cout << "Busca!" << endl;
+                        uScreen.showMenu();
                         break;
-                    case 3:
-                        cout << "Perfil!" << endl;
+                    case 3:                     
+                        shScreen.showMenu();
                         break;
                     case 4:
-                        cout << "Mensagens!" << endl;
+                        mScreen.showMenu();
                         break;
                     case 5:
-                        //showConfigOptions();
+                        this->showConfigOptions();
                         break;
                     case 6:
                         cout << "Saindo..." << endl;
-                        delete session;
+                        if(session)
+                            delete session;
                         break;
                     default:
                         break;
@@ -72,3 +122,5 @@ void MainScreen::showMenu() {
     }
 
 }
+
+

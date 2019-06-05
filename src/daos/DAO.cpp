@@ -1,5 +1,13 @@
 #include "daos/DAO.hpp"
 
+string DAO::getTableName() {
+    return "";
+};
+string DAO::getPrimaryKey() {
+    return "";
+};
+
+
 DAO::DAO() {
     Connection *conn = Connection::getInstance();
     this->sqliteConn = conn->getConnection();
@@ -14,7 +22,6 @@ int DAO::callback(void *data, int numberOfCols, char **rowValues, char **colsNam
     self->setNumberOfCols(numberOfCols); 
     self->setRowValues(rowValues); 
     self->setColsNames(colsNames);  
-    std::cout << "1" << std::endl;
     self->fetchedRows.push_back(self->fetchRow());
     return 0;
 }
@@ -39,8 +46,7 @@ map<string, string> DAO::fetchRow() {
 
     for(int i = 0; i < numberOfCols; i++){
         currentColumn = colsNames.at(i);
-        currentValue  = rowValues.at(i);
-        
+        currentValue  = rowValues.at(i);        
         row.insert(std::pair <string, string> (currentColumn, currentValue)); 
     }
 
@@ -48,8 +54,10 @@ map<string, string> DAO::fetchRow() {
 }
 
 vector<map<string, string>> DAO::select(string sql) {
+    //Clear old rows
+    this->fetchedRows.clear();
+
     this->dbStatus = sqlite3_exec(this->sqliteConn, sql.c_str(), &callback, this, &(this->zErrMsg));
-    
     if( this->dbStatus != SQLITE_OK ) {
         std::cout << "SQL error: " << string(zErrMsg) << std::endl;
         sqlite3_free(zErrMsg);
@@ -127,8 +135,4 @@ void DAO::setColsNames(char** colsNames) {
 
 int DAO::getNumberOfCols() {
     return this->returnedRow.numberOfCols;
-};
-
-vector<string> DAO::getColsNames() {
-    return this->returnedRow.colsNames;
 };

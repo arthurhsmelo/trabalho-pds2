@@ -9,13 +9,10 @@ bool SystemDAO::createPostTable() {
     return this->createTable(createQuery);
 }
 bool SystemDAO::createMessageTable() {
-    string createQuery = "CREATE TABLE message ( message_id int(11) NOT NULL, content varchar(45) DEFAULT NULL, sender_id int(11) NOT NULL, recipient_id int(11) NOT NULL, PRIMARY KEY (message_id) )";
+    string createQuery = "CREATE TABLE message ( message_id int(11) NOT NULL, content varchar(45) DEFAULT NULL, sender_user varchar(45) NOT NULL, recipient_user varchar(45) NOT NULL, PRIMARY KEY (message_id) )";
     return this->createTable(createQuery);
 }
-
-string SystemDAO::getPrimaryKey() {
-    return "";
-};
-string SystemDAO::getTableName() {
-    return "";
-};
+bool SystemDAO::createFollowTable() {
+    string createQuery = "CREATE TABLE follow ( username varchar(20) NOT NULL, follower varchar(20) NOT NULL)";
+    return this->createTable(createQuery);
+}

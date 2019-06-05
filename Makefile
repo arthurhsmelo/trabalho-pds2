@@ -5,14 +5,19 @@ CFLAGS=-std=c++11 -Wall
 BUILD_DIR = ./build
 SRC_DIR = ./src
 INCLUDE_DIR = ./include
-
-all: main
+TEST_DIR = ./test
+ 
+all: main 
 
 ####################################################
 #                                                  #
 #                       DAOS                       #
 #                                                  #
 ####################################################
+
+# Sqlite
+sqlite.o: ${INCLUDE_DIR}/lib/sqlite/sqlite3.h ${INCLUDE_DIR}/lib/sqlite/sqlite3.c
+	${C} -DSQLITE_THREADSAFE=0 -DSQLITE_OMIT_LOAD_EXTENSION -I ${INCLUDE_DIR}/ -c ${INCLUDE_DIR}/lib/sqlite/sqlite3.c -o ${BUILD_DIR}/lib/sqlite/sqlite.o
 
 # SQLITE Connection Singleton
 Connection.o: ${INCLUDE_DIR}/daos/Connection.hpp ${SRC_DIR}/daos/Connection.cpp
@@ -120,18 +125,47 @@ main.o: ${INCLUDE_DIR}/exceptions/Exception.hpp ${INCLUDE_DIR}/daos/Connection.h
 	${CC} ${CFLAGS} -I ${INCLUDE_DIR}/ -c ${SRC_DIR}/main.cpp -o ${BUILD_DIR}/main.o
 
 # app
-main: Exceptions.o Connection.o DAO.o SystemDAO.o UserDAO.o MessageDAO.o PostDAO.o SearchDAO.o MainScreen.o MessageScreen.o PostScreen.o SearchScreen.o SystemScreen.o UserScreen.o User.o Message.o Post.o Search.o System.o main.o
+main: sqlite.o Exceptions.o Connection.o DAO.o SystemDAO.o UserDAO.o MessageDAO.o PostDAO.o SearchDAO.o MainScreen.o MessageScreen.o PostScreen.o SearchScreen.o SystemScreen.o UserScreen.o User.o Message.o Post.o Search.o System.o main.o
 	${CC} ${CFLAGS} -o ${BUILD_DIR}/main ${BUILD_DIR}/*.o ${BUILD_DIR}/lib/sqlite/sqlite.o
 
 
-# Rule for cleaning files generated during compilation.
-# Call 'make clean' to use it
-clean_linux:
-	rm -rf ${BUILD_DIR}/*.o 
+#test
+test.o: ${TEST_DIR}/main.cpp
+	make clean
+	${CC} ${CFLAGS} -I ${INCLUDE_DIR}/ -c ${TEST_DIR}/*.cpp
+	mv *.o ${TEST_DIR}
+
+test: test.o sqlite.o Exceptions.o Connection.o DAO.o SystemDAO.o UserDAO.o MessageDAO.o PostDAO.o SearchDAO.o User.o Message.o Post.o Search.o System.o
+	${CC} ${CFLAGS} -o ${TEST_DIR}/main ${TEST_DIR}/*.o ${BUILD_DIR}/*.o ${BUILD_DIR}/lib/sqlite/sqlite.o
+
+
+ 
+# Rule for cleaning files generated during compilation. 
+# Call 'make clean' to use it 
+clean: 
+	rm -rf ${BUILD_DIR}/*.o    
 
 clean_windows:
-	del /S "%dir%\build\*.o"
+	del /S "%dir%\build\*.o"    
 
 run:
+	./build/main
+
+run_windows:
 	./build/main.exe
+
+cleantest: 
+	rm -rf ${TEST_DIR}/*.o    
+
+cleantest_windows:
+	del /S "%dir%\test\*.o"  
+
+runtest:
+	./test/main
+
+runtest_windows:
+	./test/main.exe
+
+
+
 
